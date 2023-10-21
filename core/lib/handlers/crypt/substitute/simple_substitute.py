@@ -15,7 +15,7 @@ class SimpleSubstitute(Handler):
     _new_alph: str
     _current_alph: str
 
-    def __init__(self, d: "SimpleSubstitute" = None) -> None:
+    def __init__(self) -> None:
         """Init Handler"""
         self.handler_name = "Simple Substitute Encryptor"
 
@@ -26,11 +26,6 @@ class SimpleSubstitute(Handler):
         self._special_symbols = "1234567890 ,.!?:;'{}%$#№@^*()<>&|/\\\n\r\t\""
         self._sub_types_avail = { "cesar" : self._cesar_substitute,
                                   "atbash": self._atbash_substitute }
-
-        if d:
-            self.sub_type = d.sub_type
-            self.cesar_offset = d.cesar_offset
-            return
         
         self.sub_type = "cesar"
         self.cesar_offset = 5
