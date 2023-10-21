@@ -13,15 +13,19 @@ class SimpleSubstitute(Handler):
     _sub_types_avail: ty.Dict
 
     _new_alph: str
+    _current_alph: str
 
     def __init__(self, d: "SimpleSubstitute" = None) -> None:
         """Init Handler"""
         self.handler_name = "Simple Substitute Encryptor"
 
-        self._alphs = { 'eng': "abcdefghijklmnopqrstuvwxyz",
-                        'ru' : "абвгдеёжзийклмнопрстуфхцчшщъыьэюя" }
+        self._alphs = { 'eng': { 'forward' : "abcdefghijklmnopqrstuvwxyz",
+                                 'backward': "zyxwvutsrqponmlkjihgfedcba" },
+                        'ru' : { 'forward' : "абвгдеёжзийклмнопрстуфхцчшщъыьэюя", 
+                                 'backward': "яюэьыъщшчцхфутсрпонмлкйизжёедгвба" } }
         self._special_symbols = "1234567890 ,.!?:;'{}%$#№@^*()<>&|/\\\n\r\t\""
-        self._sub_types_avail = { "cesar" : self._cesar_substitute }
+        self._sub_types_avail = { "cesar" : self._cesar_substitute,
+                                  "atbash": self._atbash_substitute }
 
         if d:
             self.sub_type = d.sub_type
@@ -63,6 +67,29 @@ class SimpleSubstitute(Handler):
         data = self._run(data, crypt=False)
 
         return data
+    
+    def _substitute_w_alph(self, data: str, alph_code: str) -> str:
+        new_data = ''
+
+        for _, letter in enumerate(data):
+            if letter in self._special_symbols:
+                new_data += letter
+                continue
+
+            letter_idx = self._current_alph.find(letter.lower())
+
+            if not letter_idx + 1:
+                self._raise_error(f"There's no such letter '{letter}' in {alph_code} alphabet")
+
+            new_letter = self._new_alph[letter_idx]
+
+            if letter.islower():
+                new_data += new_letter
+                continue
+
+            new_data += new_letter.upper()
+
+        return new_data
 
     def _select_alph(self, data: str) -> ty.Union[str, None]:
         """
@@ -76,7 +103,7 @@ class SimpleSubstitute(Handler):
         
         for letter in data:
             for alph_key in self._alphs:
-                alph = self._alphs[alph_key]
+                alph = self._alphs[alph_key]['forward']
 
                 if letter.lower() in alph:
                     return alph_key, alph
@@ -95,7 +122,29 @@ class SimpleSubstitute(Handler):
                 Information encrypt the text or decrypt it on the contrary
         """
         
-        self._new_alph = alph[crypt * self.cesar_offset : ] + alph[ : crypt * self.cesar_offset]
+        return alph[crypt * self.cesar_offset : ] + alph[ : crypt * self.cesar_offset]
+
+    def _atbash_substitute(self, data: str, crypt: int = 1) -> str:
+        """
+        Apply Abash encryption/decryption to text
+
+        Parameters
+        ----------
+        data : str
+                Text to encrypt or decrypt
+        crypt : int
+                Information encrypt the text or decrypt it on the contrary
+        """
+
+        alph_code, alph = self._select_alph(data)
+
+        self._current_alph = alph
+        self._new_alph = self._alphs[alph_code]['backward']
+
+        new_data = self._substitute_w_alph(data, alph_code)
+
+        return new_data
+
 
     def _cesar_substitute(self, data: str, crypt: int = 1) -> str:
         """
@@ -110,28 +159,11 @@ class SimpleSubstitute(Handler):
         """
         
         alph_code, alph = self._select_alph(data)
-        self._generate_alph_for_cesar(alph, crypt)
 
-        current_alph = alph
-        new_data = ''
+        self._current_alph = alph
+        self._new_alph = self._generate_alph_for_cesar(alph, crypt)
 
-        for _, letter in enumerate(data):
-            if letter in self._special_symbols:
-                new_data += letter
-                continue
-
-            letter_idx = current_alph.find(letter.lower())
-
-            if not letter_idx + 1:
-                self._raise_error(f"There's no such letter '{letter}' in {alph_code} alphabet")
-
-            new_letter = self._new_alph[letter_idx]
-
-            if letter.islower():
-                new_data += new_letter
-                continue
-
-            new_data += new_letter.upper()
+        new_data = self._substitute_w_alph(data, alph_code)
 
         return new_data
 

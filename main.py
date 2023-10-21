@@ -30,5 +30,16 @@ def run():
     new_result = new_simp_sub.decrypt('.Энщх Ыймехд?') # .Шифр Цезаря?
     print(new_result)
 
+    simp_sub.sub_type = 'atbash'
+
+    result = simp_sub.encrypt('/Шифр Атбаш\\') # /Жцко Ямюяж\
+    print(result)
+
+    new_simp_sub.sub_type = 'atbash'
+
+    result = new_simp_sub.encrypt('/Жцко Ямюяж\\') # /Шифр Атбаш\
+    print(result)
+    
+
 if __name__ == "__main__":
     run()
