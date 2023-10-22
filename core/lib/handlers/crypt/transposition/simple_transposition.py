@@ -58,6 +58,17 @@ class SimpleTransposition(Handler):
         return data
 
     def _route_transposition(self, data: str, crypt=True) -> str:
+        """
+        Apply route transposition encryption/decryption to text
+
+        Parameters
+        ----------
+        data : str
+                Text to encrypt or decrypt
+        crypt : bool
+                Information encrypt the text or decrypt it on the contrary
+        """
+
         self.rows_count = ceil(len(data) / self.cols_count)
         data += ''.join(' ' for _ in range(self.rows_count * self.cols_count - len(data)))
 
