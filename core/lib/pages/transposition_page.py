@@ -8,23 +8,23 @@ class TransposePage(QDialog):
     def __init__(self, widget) -> None:
         super(TransposePage, self).__init__()
         loadUi("core/lib/uis/transposition/Transposition.ui", self)
-        self.backButton.clicked.connect(self.go_back)
+        self.backButton.clicked.connect(self._go_back)
 
-        self.encodeButton.clicked.connect(self.encode)
-        self.decodeButton.clicked.connect(self.decode)
+        self.encodeButton.clicked.connect(self._encode)
+        self.decodeButton.clicked.connect(self._decode)
 
         self.widget = widget
 
-    def go_back(self) -> None:
+    def _go_back(self) -> None:
         self.widget.setCurrentIndex(0)
 
-    def encode(self) -> None:
+    def _encode(self) -> None:
         simp_trans = SimpleTransposition()
         simp_trans.trans_type = self.typeEdit.toPlainText()
         simp_trans.cols_count = self.colsEdit.toPlainText()
         self.resultEdit.setText(simp_trans.encrypt(self.textEdit.toPlainText()))
 
-    def decode(self) -> None:
+    def _decode(self) -> None:
         simp_trans = SimpleTransposition()
         simp_trans.trans_type = self.typeEdit.toPlainText()
         simp_trans.cols_count = self.colsEdit.toPlainText()

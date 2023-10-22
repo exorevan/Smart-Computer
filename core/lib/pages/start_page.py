@@ -6,14 +6,14 @@ class StartPage(QDialog):
     def __init__(self, widget) -> None:
         super(StartPage, self).__init__()
         loadUi("core/lib/uis/start/Start.ui", self)
-        self.openSubstituteButton.clicked.connect(self.openSubstitutePage)
-        self.openTranspositionButton.clicked.connect(self.openTranspositionPage)
+        self.openSubstituteButton.clicked.connect(self._openSubstitutePage)
+        self.openTranspositionButton.clicked.connect(self._openTranspositionPage)
 
         self.widget = widget
 
-    def openSubstitutePage(self) -> None:
+    def _openSubstitutePage(self) -> None:
         self.widget.setCurrentIndex(1)
 
-    def openTranspositionPage(self) -> None:
+    def _openTranspositionPage(self) -> None:
         self.widget.setCurrentIndex(2)
     
