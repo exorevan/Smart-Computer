@@ -5,8 +5,8 @@ from core.lib.handlers.handler_interface import Handler
 
 
 class SimpleSubstitute(Handler):
-    sub_type: str
-    cesar_offset: int
+    _sub_type: str
+    _cesar_offset: int
 
     _alphs: ty.Dict
     _special_symbols: str
