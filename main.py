@@ -16,28 +16,32 @@ from matplotlib import ticker
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 from core.lib.handlers.crypt.substitute.simple_substitute import SimpleSubstitute
+from core.lib.handlers.crypt.transposition.simple_transposition import SimpleTransposition
 
 
 def run():
     simp_sub = SimpleSubstitute()
     simp_sub.sub_type = 'cesar'
     simp_sub.cesar_offset = "5"
-
     result = simp_sub.encrypt('.Шифр Цезаря?') # .Энщх Ыймехд?
     print(result)
-
-    new_simp_sub = SimpleSubstitute(simp_sub)
+    new_simp_sub = SimpleSubstitute()
     new_result = new_simp_sub.decrypt('.Энщх Ыймехд?') # .Шифр Цезаря?
     print(new_result)
 
     simp_sub.sub_type = 'atbash'
-
     result = simp_sub.encrypt('/Шифр Атбаш\\') # /Жцко Ямюяж\
     print(result)
-
     new_simp_sub.sub_type = 'atbash'
-
     result = new_simp_sub.encrypt('/Жцко Ямюяж\\') # /Шифр Атбаш\
+    print(result)
+
+    simp_trans = SimpleTransposition()
+    simp_trans.trans_type = 'route'
+    simp_trans.cols_count = 6
+    result = simp_trans.encrypt('.Маршрутный шифр?') # шу.итмфнарыр?йш  р
+    print(result)
+    result = simp_trans.decrypt('шу.итмфнарыр?йш  р') # .Маршрутный шифр?
     print(result)
     
 

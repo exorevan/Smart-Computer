@@ -23,7 +23,9 @@ class SimpleSubstitute(Handler):
                                  'backward': "zyxwvutsrqponmlkjihgfedcba" },
                         'ru' : { 'forward' : "абвгдеёжзийклмнопрстуфхцчшщъыьэюя", 
                                  'backward': "яюэьыъщшчцхфутсрпонмлкйизжёедгвба" } }
+        
         self._special_symbols = "1234567890 ,.!?:;'{}%$#№@^*()<>&|/\\\n\r\t\""
+        
         self._sub_types_avail = { "cesar" : self._cesar_substitute,
                                   "atbash": self._atbash_substitute }
         
