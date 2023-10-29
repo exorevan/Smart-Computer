@@ -3,10 +3,10 @@ import numpy as np
 import typing as ty
 
 from core import config
-from core.lib.handlers.handler_interface import Handler
+from core.lib.handlers.crypt.crypt_handler_interface import CryptHandler
 
 
-class SingleFileCrypt(Handler):
+class SingleFileCrypt(CryptHandler):
     base_alph: str
     crypt_alph: str
 
@@ -20,11 +20,8 @@ class SingleFileCrypt(Handler):
         self.base_alph  = 'АЕЁИОУЫЭЮЯ'
         self.crypt_alph = 'ЫЯОАЮЁЭЕИУ'
 
-    def encrypt(self) -> None:
-        data = self._run(crypt=True)
-
-    def decrypt(self) -> None:
-        data = self._run(crypt=False)
+        self.orig_file = 'orig.txt'
+        self.processed_file = 'processed.txt'
 
     def _custom_function(self, crypt=True) -> None:
         """
@@ -40,23 +37,24 @@ class SingleFileCrypt(Handler):
             self.base_alph = self.crypt_alph
             self.crypt_alph = temp_alph
 
-        with open(self.orig_file, "r") as orig_file:
-            with open(self.processed_file, "w") as processed_file:
-                for line in orig_file.readlines():
-                    new_line = ''
+        processed_file = open(self.processed_file, "w")
+        orig_file = open(self.orig_file, "r")
 
-                    for char in line:
-                        letter_idx = self.base_alph.find(char.upper())
+        for line in orig_file.readlines():
+            new_line = ''
 
-                        if letter_idx + 1:
-                            new_line += self.crypt_alph[letter_idx]
-                            continue
+            for char in line:
+                letter_idx = self.base_alph.find(char.upper())
 
-                        new_line += char
+                if letter_idx + 1:
+                    new_line += self.crypt_alph[letter_idx]
+                    continue
 
-                    processed_file.write(new_line)
+                new_line += char
 
-    def _run(self, crypt=True) -> None:
+            processed_file.write(new_line)
+
+    def _run(self, data: str = '', crypt: bool = True) -> None:
         """
         Return encrypted/decrypted data
 
@@ -68,4 +66,4 @@ class SingleFileCrypt(Handler):
                 Information encrypt the text or decrypt it on the contrary
         """
 
-        data = self._custom_function(crypt=crypt)
+        self._custom_function(crypt=crypt)

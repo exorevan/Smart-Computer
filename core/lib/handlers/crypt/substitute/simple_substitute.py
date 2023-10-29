@@ -1,10 +1,10 @@
 import typing as ty
 
 from core import config
-from core.lib.handlers.handler_interface import Handler
+from core.lib.handlers.crypt.crypt_handler_interface import CryptHandler
 
 
-class SimpleSubstitute(Handler):
+class SimpleSubstitute(CryptHandler):
     _sub_type: str
     _cesar_offset: int
     _custom_offset: int
@@ -68,16 +68,6 @@ class SimpleSubstitute(Handler):
         except:
             self._raise_error(f"Cannot cast '{custom_offset}' to cesar_offset (int)")
 
-    def encrypt(self, data: str) -> str:
-        data = self._run(data, crypt=True)
-
-        return data
-
-    def decrypt(self, data: str) -> str:
-        data = self._run(data, crypt=False)
-
-        return data
-    
     def _substitute_w_alph(self, data: str, alph_code: str) -> str:
         new_data = ''
 

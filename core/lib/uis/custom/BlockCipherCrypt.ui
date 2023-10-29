@@ -142,11 +142,11 @@ QPushButton:hover {
                 <widget class="QLabel" name="label">
                  <property name="font">
                   <font>
-                   <pointsize>40</pointsize>
+                   <pointsize>28</pointsize>
                   </font>
                  </property>
                  <property name="text">
-                  <string>Шифр для одного файла</string>
+                  <string>Блочный шифр</string>
                  </property>
                  <property name="alignment">
                   <set>Qt::AlignCenter</set>
@@ -300,53 +300,12 @@ color: white;
                  <property name="frameShadow">
                   <enum>QFrame::Raised</enum>
                  </property>
-                 <widget class="QTextEdit" name="origFileEdit">
-                  <property name="geometry">
-                   <rect>
-                    <x>20</x>
-                    <y>150</y>
-                    <width>261</width>
-                    <height>58</height>
-                   </rect>
-                  </property>
-                  <property name="minimumSize">
-                   <size>
-                    <width>0</width>
-                    <height>58</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>58</height>
-                   </size>
-                  </property>
-                 </widget>
-                 <widget class="QLabel" name="label_3">
-                  <property name="geometry">
-                   <rect>
-                    <x>20</x>
-                    <y>90</y>
-                    <width>150</width>
-                    <height>50</height>
-                   </rect>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <family>Calibri</family>
-                    <pointsize>20</pointsize>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>Оригинал:</string>
-                  </property>
-                 </widget>
                  <widget class="QLabel" name="label_4">
                   <property name="geometry">
                    <rect>
                     <x>20</x>
-                    <y>240</y>
-                    <width>211</width>
+                    <y>160</y>
+                    <width>251</width>
                     <height>50</height>
                    </rect>
                   </property>
@@ -357,14 +316,14 @@ color: white;
                    </font>
                   </property>
                   <property name="text">
-                   <string>Зашифрованный:</string>
+                   <string>Количество блоков:</string>
                   </property>
                  </widget>
-                 <widget class="QTextEdit" name="processedFileEdit">
+                 <widget class="QTextEdit" name="blocksEdit">
                   <property name="geometry">
                    <rect>
                     <x>20</x>
-                    <y>300</y>
+                    <y>220</y>
                     <width>261</width>
                     <height>58</height>
                    </rect>

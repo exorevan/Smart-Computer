@@ -3,10 +3,10 @@ import numpy as np
 import typing as ty
 
 from core import config
-from core.lib.handlers.handler_interface import Handler
+from core.lib.handlers.crypt.crypt_handler_interface import CryptHandler
 
 
-class SimpleTransposition(Handler):
+class SimpleTransposition(CryptHandler):
     _trans_type: str
     _cols_count: int
 
@@ -47,16 +47,6 @@ class SimpleTransposition(Handler):
             return
         
         self._raise_error(f"Negative number for columns count")
-
-    def encrypt(self, data: str) -> str:
-        data = self._run(data, crypt=True)
-
-        return data
-
-    def decrypt(self, data: str) -> str:
-        data = self._run(data, crypt=False)
-
-        return data
 
     def _route_transposition(self, data: str, crypt=True) -> str:
         """

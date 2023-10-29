@@ -10,6 +10,8 @@ from core.lib.pages.start_page import StartPage
 from core.lib.pages.substitute_page import SubstitutePage
 from core.lib.pages.transposition_page import TransposePage
 from core.lib.pages.single_file_page import SingleFilePage
+from core.lib.pages.double_file_page import DoubleFilePage 
+from core.lib.pages.custom_block_page import CustomBlockPage
     
 
 class MainApplication(Handler):
@@ -25,11 +27,15 @@ class MainApplication(Handler):
         substitute = SubstitutePage(widget)
         transpose = TransposePage(widget)
         singleFile = SingleFilePage(widget)
+        doubleFile = DoubleFilePage(widget)
+        cipherBlock = CustomBlockPage(widget)
 
         widget.addWidget(start)
         widget.addWidget(substitute)
         widget.addWidget(transpose)
         widget.addWidget(singleFile)
+        widget.addWidget(doubleFile)
+        widget.addWidget(cipherBlock)
         widget.show()
 
         sys.exit(app.exec())
@@ -42,6 +48,7 @@ if __name__ == "__main__":
             1 - Substitute
             2 - Transpose
             3 - Sinfle-file
+            4 - Double-file
     """
 
     MainApplication.run()

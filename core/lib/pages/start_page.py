@@ -24,7 +24,7 @@ class StartPage(QDialog):
         self.widget.setCurrentIndex(3)
 
     def _openDoubleFilePage(self) -> None:
-        self.widget.setCurrentIndex(3)
+        self.widget.setCurrentIndex(4)
 
     def _openBlockCipherPage(self) -> None:
-        self.widget.setCurrentIndex(3)
+        self.widget.setCurrentIndex(5)
