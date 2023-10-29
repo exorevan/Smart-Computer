@@ -7,6 +7,7 @@ from core.lib.handlers.handler_interface import Handler
 class SimpleSubstitute(Handler):
     _sub_type: str
     _cesar_offset: int
+    _custom_offset: int
 
     _alphs: ty.Dict
     _special_symbols: str
@@ -27,7 +28,8 @@ class SimpleSubstitute(Handler):
         self._special_symbols = "1234567890 ,.!?:;'{}%$#№@^*()<>&|/\\\n\r\t\""
         
         self._sub_types_avail = { "cesar" : self._cesar_substitute,
-                                  "atbash": self._atbash_substitute }
+                                  "atbash": self._atbash_substitute,
+                                   "custom": self._custom_substitute }
         
         self.sub_type = "cesar"
         self.cesar_offset = 5
@@ -54,6 +56,17 @@ class SimpleSubstitute(Handler):
             self._cesar_offset = int(cesar_offset)
         except:
             self._raise_error(f"Cannot cast '{cesar_offset}' to cesar_offset (int)")
+
+    @property
+    def custom_offset(self) -> str:
+        return self._custom_offset
+
+    @custom_offset.setter
+    def custom_offset(self, custom_offset: ty.Union[str, int]) -> None:
+        try:
+            self._custom_offset = int(custom_offset)
+        except:
+            self._raise_error(f"Cannot cast '{custom_offset}' to cesar_offset (int)")
 
     def encrypt(self, data: str) -> str:
         data = self._run(data, crypt=True)
@@ -142,7 +155,6 @@ class SimpleSubstitute(Handler):
 
         return new_data
 
-
     def _cesar_substitute(self, data: str, crypt: int = 1) -> str:
         """
         Apply Cesar encryption/decryption to text
@@ -161,6 +173,28 @@ class SimpleSubstitute(Handler):
         self._new_alph = self._generate_alph_for_cesar(alph, crypt)
 
         new_data = self._substitute_w_alph(data, alph_code)
+
+        return new_data
+
+    def _custom_substitute(self, data: str, crypt: int = 1) -> str:
+        """
+        Apply custom encryption/decryption to text
+
+        Parameters
+        ----------
+        data : str
+                Text to encrypt or decrypt
+        crypt : int
+                Information encrypt the text or decrypt it on the contrary
+        """
+
+        if (crypt + 1) / 2:
+            return ''.join(list([self._custom_into_to_str_fill(ord(char) + self.custom_offset, 4) for char in data]))
+        
+        new_data = ''
+
+        for i in range(int(len(data) / 4)):
+            new_data += chr(int(float(data[i * 4: i * 4 + 4]) - self.custom_offset))
 
         return new_data
 

@@ -300,36 +300,11 @@ color: white;
                  <property name="frameShadow">
                   <enum>QFrame::Raised</enum>
                  </property>
-                 <widget class="QLabel" name="label_2">
-                  <property name="geometry">
-                   <rect>
-                    <x>20</x>
-                    <y>20</y>
-                    <width>150</width>
-                    <height>50</height>
-                   </rect>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>16777215</width>
-                    <height>50</height>
-                   </size>
-                  </property>
-                  <property name="font">
-                   <font>
-                    <family>Calibri</family>
-                    <pointsize>20</pointsize>
-                   </font>
-                  </property>
-                  <property name="text">
-                   <string>Метод:</string>
-                  </property>
-                 </widget>
                  <widget class="QTextEdit" name="colsEdit">
                   <property name="geometry">
                    <rect>
                     <x>20</x>
-                    <y>250</y>
+                    <y>150</y>
                     <width>150</width>
                     <height>58</height>
                    </rect>
@@ -347,21 +322,11 @@ color: white;
                    </size>
                   </property>
                  </widget>
-                 <widget class="QTextEdit" name="typeEdit">
-                  <property name="geometry">
-                   <rect>
-                    <x>20</x>
-                    <y>80</y>
-                    <width>150</width>
-                    <height>60</height>
-                   </rect>
-                  </property>
-                 </widget>
                  <widget class="QLabel" name="label_3">
                   <property name="geometry">
                    <rect>
                     <x>20</x>
-                    <y>190</y>
+                    <y>90</y>
                     <width>150</width>
                     <height>50</height>
                    </rect>

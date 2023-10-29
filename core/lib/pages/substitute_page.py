@@ -20,13 +20,13 @@ class SubstitutePage(QDialog):
 
     def _encode(self) -> None:
         simp_sub = SimpleSubstitute()
-        simp_sub.sub_type = self.typeEdit.toPlainText()
-        simp_sub.cesar_offset = self.offsetEdit.toPlainText()
+        simp_sub.sub_type = 'custom'
+        simp_sub.custom_offset = self.offsetEdit.toPlainText()
         self.resultEdit.setText(simp_sub.encrypt(self.textEdit.toPlainText()))
 
     def _decode(self) -> None:
         simp_sub = SimpleSubstitute()
-        simp_sub.sub_type = self.typeEdit.toPlainText()
-        simp_sub.cesar_offset = self.offsetEdit.toPlainText()
+        simp_sub.sub_type = 'custom'
+        simp_sub.custom_offset = self.offsetEdit.toPlainText()
         self.resultEdit.setText(simp_sub.decrypt(self.textEdit.toPlainText()))
     

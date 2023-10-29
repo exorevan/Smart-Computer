@@ -20,13 +20,13 @@ class TransposePage(QDialog):
 
     def _encode(self) -> None:
         simp_trans = SimpleTransposition()
-        simp_trans.trans_type = self.typeEdit.toPlainText()
+        simp_trans.trans_type = 'custom'
         simp_trans.cols_count = self.colsEdit.toPlainText()
         self.resultEdit.setText(simp_trans.encrypt(self.textEdit.toPlainText()))
 
     def _decode(self) -> None:
         simp_trans = SimpleTransposition()
-        simp_trans.trans_type = self.typeEdit.toPlainText()
+        simp_trans.trans_type = 'custom'
         simp_trans.cols_count = self.colsEdit.toPlainText()
         self.resultEdit.setText(simp_trans.decrypt(self.textEdit.toPlainText()))
     

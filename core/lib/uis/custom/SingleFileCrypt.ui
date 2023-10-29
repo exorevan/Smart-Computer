@@ -72,23 +72,25 @@ background-position: center;</string>
          <number>0</number>
         </property>
         <item>
-         <layout class="QHBoxLayout" name="horizontalLayout_8">
+         <layout class="QVBoxLayout" name="verticalLayout_6">
           <item>
-           <widget class="QPushButton" name="backButton">
-            <property name="maximumSize">
-             <size>
-              <width>100</width>
-              <height>16777215</height>
-             </size>
-            </property>
-            <property name="font">
-             <font>
-              <family>MS Serif</family>
-              <pointsize>15</pointsize>
-             </font>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">
+           <layout class="QHBoxLayout" name="horizontalLayout_8">
+            <item>
+             <widget class="QPushButton" name="backButton">
+              <property name="maximumSize">
+               <size>
+                <width>100</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="font">
+               <font>
+                <family>MS Serif</family>
+                <pointsize>15</pointsize>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">
 QPushButton{
 background-color: #6ad487;
 border-radius: 20;
@@ -106,58 +108,57 @@ QPushButton:hover {
 }
 
 </string>
-            </property>
-            <property name="text">
-             <string>Назад</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QFrame" name="frame_6">
-            <property name="frameShape">
-             <enum>QFrame::StyledPanel</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <layout class="QVBoxLayout" name="verticalLayout_9">
-             <property name="spacing">
-              <number>0</number>
-             </property>
-             <property name="leftMargin">
-              <number>20</number>
-             </property>
-             <property name="topMargin">
-              <number>20</number>
-             </property>
-             <property name="rightMargin">
-              <number>5</number>
-             </property>
-             <property name="bottomMargin">
-              <number>20</number>
-             </property>
-             <item>
-              <widget class="QLabel" name="label">
-               <property name="font">
-                <font>
-                 <pointsize>40</pointsize>
-                </font>
+              </property>
+              <property name="text">
+               <string>Назад</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QFrame" name="frame_6">
+              <property name="frameShape">
+               <enum>QFrame::StyledPanel</enum>
+              </property>
+              <property name="frameShadow">
+               <enum>QFrame::Raised</enum>
+              </property>
+              <layout class="QVBoxLayout" name="verticalLayout_9">
+               <property name="spacing">
+                <number>0</number>
                </property>
-               <property name="text">
-                <string>Шифр простой замены</string>
+               <property name="leftMargin">
+                <number>20</number>
                </property>
-               <property name="alignment">
-                <set>Qt::AlignCenter</set>
+               <property name="topMargin">
+                <number>20</number>
                </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
+               <property name="rightMargin">
+                <number>5</number>
+               </property>
+               <property name="bottomMargin">
+                <number>20</number>
+               </property>
+               <item>
+                <widget class="QLabel" name="label">
+                 <property name="font">
+                  <font>
+                   <pointsize>40</pointsize>
+                  </font>
+                 </property>
+                 <property name="text">
+                  <string>Шифр простой перестановки</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
-        </item>
-        <item>
-         <layout class="QVBoxLayout" name="verticalLayout_6"/>
         </item>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -289,7 +290,7 @@ color: white;
                 <widget class="QFrame" name="frame_8">
                  <property name="minimumSize">
                   <size>
-                   <width>200</width>
+                   <width>300</width>
                    <height>0</height>
                   </size>
                  </property>
@@ -299,12 +300,12 @@ color: white;
                  <property name="frameShadow">
                   <enum>QFrame::Raised</enum>
                  </property>
-                 <widget class="QTextEdit" name="offsetEdit">
+                 <widget class="QTextEdit" name="origFileEdit">
                   <property name="geometry">
                    <rect>
                     <x>20</x>
-                    <y>180</y>
-                    <width>150</width>
+                    <y>150</y>
+                    <width>261</width>
                     <height>58</height>
                    </rect>
                   </property>
@@ -325,7 +326,7 @@ color: white;
                   <property name="geometry">
                    <rect>
                     <x>20</x>
-                    <y>120</y>
+                    <y>90</y>
                     <width>150</width>
                     <height>50</height>
                    </rect>
@@ -337,7 +338,48 @@ color: white;
                    </font>
                   </property>
                   <property name="text">
-                   <string>Отступ:</string>
+                   <string>Оригинал:</string>
+                  </property>
+                 </widget>
+                 <widget class="QLabel" name="label_4">
+                  <property name="geometry">
+                   <rect>
+                    <x>20</x>
+                    <y>240</y>
+                    <width>211</width>
+                    <height>50</height>
+                   </rect>
+                  </property>
+                  <property name="font">
+                   <font>
+                    <family>Calibri</family>
+                    <pointsize>20</pointsize>
+                   </font>
+                  </property>
+                  <property name="text">
+                   <string>Зашифрованный:</string>
+                  </property>
+                 </widget>
+                 <widget class="QTextEdit" name="processedFileEdit">
+                  <property name="geometry">
+                   <rect>
+                    <x>20</x>
+                    <y>300</y>
+                    <width>261</width>
+                    <height>58</height>
+                   </rect>
+                  </property>
+                  <property name="minimumSize">
+                   <size>
+                    <width>0</width>
+                    <height>58</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>58</height>
+                   </size>
                   </property>
                  </widget>
                 </widget>
@@ -384,6 +426,12 @@ color: white;
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
            <widget class="QFrame" name="frame_5">
+            <property name="minimumSize">
+             <size>
+              <width>620</width>
+              <height>0</height>
+             </size>
+            </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
             </property>

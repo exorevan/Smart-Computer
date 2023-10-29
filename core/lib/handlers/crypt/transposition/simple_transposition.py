@@ -13,7 +13,8 @@ class SimpleTransposition(Handler):
     def __init__(self) -> None:
         """Init Handler"""
         self.handler_name = "Simple Transposition Encryptor"
-        self._trans_types_avail = { "route" : self._route_transposition }
+        self._trans_types_avail = { "route" :  self._route_transposition,
+                                    "custom" : self._custom_transposition }
 
         self.trans_type = 'route'
         self.cols_count = 5
@@ -82,6 +83,20 @@ class SimpleTransposition(Handler):
         data = ''.join(map(str, right_data_matrix.flatten())).lower().rstrip()
 
         return data
+
+    def _custom_transposition(self, data: str, crypt=True) -> str:
+        """
+        Apply custom transposition encryption/decryption to text
+
+        Parameters
+        ----------
+        data : str
+                Text to encrypt or decrypt
+        crypt : bool
+                Information encrypt the text or decrypt it on the contrary
+        """
+
+        return ''.join(data[i + 1 : i + 2] + data[i : i + 1] for i in range(0, len(data), 2))
 
     def _run(self, data: str, crypt=True) -> str:
         """

@@ -24,3 +24,6 @@ class Handler:
         print(f'\nPlace: {self.handler_name}')
         print(f'- Fatal error: {txt}')
         quit()
+
+    def _custom_into_to_str_fill(self, code: str, str_len: int) -> str:
+        return (f"%{str_len}.f" % code).replace(' ', '0')
