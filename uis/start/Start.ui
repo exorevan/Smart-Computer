@@ -693,7 +693,7 @@ QPushButton:hover {
               </widget>
              </item>
              <item>
-              <widget class="QPushButton" name="pushButton_4">
+              <widget class="QPushButton" name="openVkVideoDownloaderPageButton">
                <property name="minimumSize">
                 <size>
                  <width>0</width>
@@ -727,7 +727,7 @@ QPushButton:hover {
 </string>
                </property>
                <property name="text">
-                <string/>
+                <string>Vk Video Downloader</string>
                </property>
               </widget>
              </item>

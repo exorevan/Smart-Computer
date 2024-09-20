@@ -1,0 +1,32 @@
+from PyQt6.QtWidgets import QDialog, QStackedWidget
+from PyQt6.uic import loadUi
+
+from core.lib.handlers.crypt.substitute.simple_substitute import \
+    SimpleSubstitute
+
+
+class SubstitutePage(QDialog):
+    def __init__(self, widget: QStackedWidget) -> None:
+        super(SubstitutePage, self).__init__()
+        loadUi("uis//crypt/substitution/Substitution.ui", self)
+        self.backButton.clicked.connect(self._go_back)
+
+        self.encodeButton.clicked.connect(self._encode)
+        self.decodeButton.clicked.connect(self._decode)
+
+        self.widget = widget
+
+    def _go_back(self) -> None:
+        self.widget.setCurrentIndex(0)
+
+    def _encode(self) -> None:
+        simp_sub = SimpleSubstitute()
+        simp_sub.sub_type = "custom"
+        simp_sub.custom_offset = self.offsetEdit.toPlainText()
+        self.resultEdit.setText(simp_sub.encrypt(self.textEdit.toPlainText()))
+
+    def _decode(self) -> None:
+        simp_sub = SimpleSubstitute()
+        simp_sub.sub_type = "custom"
+        simp_sub.custom_offset = self.offsetEdit.toPlainText()
+        self.resultEdit.setText(simp_sub.decrypt(self.textEdit.toPlainText()))

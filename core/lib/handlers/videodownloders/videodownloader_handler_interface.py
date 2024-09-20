@@ -1,5 +1,5 @@
 from core.lib.handlers.handler_interface import Handler
 
 
-class DownloaderHandler(Handler):
+class VideoDownloaderHandler(Handler):
     pass

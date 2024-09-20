@@ -1,9 +1,9 @@
-from PyQt6.QtWidgets import QDialog
+from PyQt6.QtWidgets import QDialog, QStackedWidget
 from PyQt6.uic import loadUi
 
 
 class StartPage(QDialog):
-    def __init__(self, widget) -> None:
+    def __init__(self, widget: QStackedWidget) -> None:
         super(StartPage, self).__init__()
         loadUi("uis/start/Start.ui", self)
         self.openSubstituteButton.clicked.connect(self._openSubstitutePage)
@@ -11,6 +11,10 @@ class StartPage(QDialog):
         self.openSingleFileButton.clicked.connect(self._openSingleFilePage)
         self.openDoubleFileButton.clicked.connect(self._openDoubleFilePage)
         self.openBlockCipherButton.clicked.connect(self._openBlockCipherPage)
+        self.openBlockCipherButton.clicked.connect(self._openBlockCipherPage)
+        self.openVkVideoDownloaderPageButton.clicked.connect(
+            self._openVkVideoDownloaderPage
+        )
 
         self.widget = widget
 
@@ -28,3 +32,6 @@ class StartPage(QDialog):
 
     def _openBlockCipherPage(self) -> None:
         self.widget.setCurrentIndex(5)
+
+    def _openVkVideoDownloaderPage(self) -> None:
+        self.widget.setCurrentIndex(6)

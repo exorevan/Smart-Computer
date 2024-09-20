@@ -1,15 +1,14 @@
-from PyQt6.QtWidgets import QDialog
+from PyQt6.QtWidgets import QDialog, QStackedWidget
 from PyQt6.uic import loadUi
 
-from core.lib.handlers.crypt.transposition.simple_transposition import (
-    SimpleTransposition,
-)
+from core.lib.handlers.crypt.transposition.simple_transposition import \
+    SimpleTransposition
 
 
 class TransposePage(QDialog):
-    def __init__(self, widget) -> None:
+    def __init__(self, widget: QStackedWidget) -> None:
         super(TransposePage, self).__init__()
-        loadUi("uis//transposition/Transposition.ui", self)
+        loadUi("uis//crypt/transposition/Transposition.ui", self)
         self.backButton.clicked.connect(self._go_back)
 
         self.encodeButton.clicked.connect(self._encode)

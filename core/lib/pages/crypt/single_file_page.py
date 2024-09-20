@@ -1,13 +1,14 @@
-from PyQt6.QtWidgets import QDialog
+from PyQt6.QtWidgets import QDialog, QStackedWidget
 from PyQt6.uic import loadUi
 
-from core.lib.handlers.crypt.custom_file_crypt.double_file_crypt import DoubleFileCrypt
+from core.lib.handlers.crypt.custom_file_crypt.single_file_crypt import \
+    SingleFileCrypt
 
 
-class DoubleFilePage(QDialog):
-    def __init__(self, widget) -> None:
-        super(DoubleFilePage, self).__init__()
-        loadUi("uis//custom/DoubleFileCrypt.ui", self)
+class SingleFilePage(QDialog):
+    def __init__(self, widget: QStackedWidget) -> None:
+        super(SingleFilePage, self).__init__()
+        loadUi("uis//crypt/custom/SingleFileCrypt.ui", self)
         self.backButton.clicked.connect(self._go_back)
 
         self.encodeButton.clicked.connect(self._encode)
@@ -19,15 +20,13 @@ class DoubleFilePage(QDialog):
         self.widget.setCurrentIndex(0)
 
     def _encode(self) -> None:
-        simp_sub = DoubleFileCrypt()
+        simp_sub = SingleFileCrypt()
         simp_sub.orig_file = self.origFileEdit.toPlainText()
-        simp_sub.additional_file = self.additionalFileEdit.toPlainText()
         simp_sub.processed_file = self.processedFileEdit.toPlainText()
         self.resultEdit.setText(simp_sub.encrypt())
 
     def _decode(self) -> None:
-        simp_sub = DoubleFileCrypt()
+        simp_sub = SingleFileCrypt()
         simp_sub.orig_file = self.origFileEdit.toPlainText()
-        simp_sub.additional_file = self.additionalFileEdit.toPlainText()
         simp_sub.processed_file = self.processedFileEdit.toPlainText()
         self.resultEdit.setText(simp_sub.decrypt())
