@@ -1,8 +1,8 @@
 import typing as ty
 
 from core import config
-from core.lib.handlers.crypt.crypt_handler_interface import CryptHandler
 from core.lib.handlers.crypt import consts_cipher
+from core.lib.handlers.crypt.crypt_handler_interface import CryptHandler
 
 
 class SimpleSubstitute(CryptHandler):
@@ -45,22 +45,22 @@ class SimpleSubstitute(CryptHandler):
         self._raise_error(f"No such simple substitution '{sub_type_name}'")
 
     @property
-    def cesar_offset(self) -> str:
+    def cesar_offset(self) -> int:
         return self._cesar_offset
 
     @cesar_offset.setter
-    def cesar_offset(self, cesar_offset: ty.Union[str, int]) -> None:
+    def cesar_offset(self, cesar_offset: int) -> None:
         try:
             self._cesar_offset = int(cesar_offset)
         except:
-            self._raise_error(f"Cannot cast '{cesar_offset}' to cesar_offset (int)")
+            self._raise_error(txt=f"Cannot cast '{cesar_offset}' to cesar_offset (int)")
 
     @property
-    def custom_offset(self) -> str:
+    def custom_offset(self) -> int:
         return self._custom_offset
 
     @custom_offset.setter
-    def custom_offset(self, custom_offset: int | str) -> None:
+    def custom_offset(self, custom_offset: int) -> None:
         try:
             self._custom_offset = int(custom_offset)
         except:
@@ -93,7 +93,7 @@ class SimpleSubstitute(CryptHandler):
 
         return new_data
 
-    def _select_alph(self, data: str) -> str | None:
+    def _select_alph(self, data: str) -> tuple[str, str]:
         """
         Find the alphabet corresponding to the text
 
@@ -103,9 +103,11 @@ class SimpleSubstitute(CryptHandler):
                 Text to encrypt or decrypt
         """
 
+        letter: str
+        alph_key: str
         alph: str
         for letter in data:
-            for alph_key in consts_cipher.ALPHABETS:
+            for alph_key in consts_cipher.ALPHABETS.keys():
                 alph = consts_cipher.ALPHABETS[alph_key]["forward"]
 
                 if letter.lower() in alph:
@@ -129,7 +131,9 @@ class SimpleSubstitute(CryptHandler):
 
         return alph[crypt * self.cesar_offset :] + alph[: crypt * self.cesar_offset]
 
-    def _atbash_substitute(self, data: str, crypt: int = 1) -> str:
+    def _atbash_substitute(
+        self, data: str, crypt: int = 1  # pyright: ignore[reportUnusedParameter]
+    ) -> str:
         """
         Apply Abash encryption/decryption to text
 
@@ -185,12 +189,13 @@ class SimpleSubstitute(CryptHandler):
 
         if (crypt + 1) / 2:
             return "".join(
-                list(
-                    [
-                        self._custom_into_to_str_fill(ord(char) + self.custom_offset, 4)
-                        for char in data
-                    ]
-                )
+                str(new_word)
+                for new_word in [
+                    self._custom_into_to_str_fill(
+                        code=(ord(char) + self.custom_offset), str_len=4  # TODO: fix
+                    )
+                    for char in data
+                ]
             )
 
         new_data = ""
@@ -200,6 +205,7 @@ class SimpleSubstitute(CryptHandler):
 
         return new_data
 
+    @ty.override
     def _run(self, data: str, crypt: bool = True) -> str:
         """
         Return encrypted/decrypted data
@@ -212,8 +218,8 @@ class SimpleSubstitute(CryptHandler):
                 Information encrypt the text or decrypt it on the contrary
         """
 
-        offset_multiplier = int(crypt) * 2 - 1
+        offset_multiplier: int = int(crypt) * 2 - 1
 
-        data = self._sub_types_avail[self.sub_type](data, crypt=offset_multiplier)
+        new_data: str = self._sub_types_avail[self.sub_type](data, offset_multiplier)
 
-        return data
+        return new_data

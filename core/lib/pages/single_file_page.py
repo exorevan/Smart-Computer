@@ -1,14 +1,13 @@
 from PyQt6.QtWidgets import QDialog
 from PyQt6.uic import loadUi
 
-from core.lib.handlers.crypt.custom_file_crypt.single_file_crypt import \
-    SingleFileCrypt
+from core.lib.handlers.crypt.custom_file_crypt.single_file_crypt import SingleFileCrypt
 
 
 class SingleFilePage(QDialog):
     def __init__(self, widget) -> None:
         super(SingleFilePage, self).__init__()
-        loadUi("core/lib/uis/custom/SingleFileCrypt.ui", self)
+        loadUi("uis//custom/SingleFileCrypt.ui", self)
         self.backButton.clicked.connect(self._go_back)
 
         self.encodeButton.clicked.connect(self._encode)
@@ -30,4 +29,3 @@ class SingleFilePage(QDialog):
         simp_sub.orig_file = self.origFileEdit.toPlainText()
         simp_sub.processed_file = self.processedFileEdit.toPlainText()
         self.resultEdit.setText(simp_sub.decrypt())
-    

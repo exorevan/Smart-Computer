@@ -1,14 +1,13 @@
 from PyQt6.QtWidgets import QDialog
 from PyQt6.uic import loadUi
 
-from core.lib.handlers.crypt.substitute.simple_substitute import \
-    SimpleSubstitute
+from core.lib.handlers.crypt.substitute.simple_substitute import SimpleSubstitute
 
 
 class SubstitutePage(QDialog):
     def __init__(self, widget) -> None:
         super(SubstitutePage, self).__init__()
-        loadUi("core/lib/uis/substitution/Substitution.ui", self)
+        loadUi("uis//substitution/Substitution.ui", self)
         self.backButton.clicked.connect(self._go_back)
 
         self.encodeButton.clicked.connect(self._encode)
@@ -21,13 +20,12 @@ class SubstitutePage(QDialog):
 
     def _encode(self) -> None:
         simp_sub = SimpleSubstitute()
-        simp_sub.sub_type = 'custom'
+        simp_sub.sub_type = "custom"
         simp_sub.custom_offset = self.offsetEdit.toPlainText()
         self.resultEdit.setText(simp_sub.encrypt(self.textEdit.toPlainText()))
 
     def _decode(self) -> None:
         simp_sub = SimpleSubstitute()
-        simp_sub.sub_type = 'custom'
+        simp_sub.sub_type = "custom"
         simp_sub.custom_offset = self.offsetEdit.toPlainText()
         self.resultEdit.setText(simp_sub.decrypt(self.textEdit.toPlainText()))
-    

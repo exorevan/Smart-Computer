@@ -1,8 +1,8 @@
 import math
 import re
 
-from core.lib.handlers.crypt.crypt_handler_interface import CryptHandler
 from core.lib.handlers.crypt import consts_cipher
+from core.lib.handlers.crypt.crypt_handler_interface import CryptHandler
 
 
 class CipherBlock(CryptHandler):

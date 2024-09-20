@@ -2,15 +2,20 @@ from core.lib.handlers.handler_interface import Handler
 
 
 class CryptHandler(Handler):
-    def encrypt(self, data: str = '') -> str:
-        data = self._run(data, crypt=True)
+    def _run(
+        self, data: str, crypt: bool  # pyright: ignore[reportUnusedParameter]
+    ) -> str | None:
+        raise NotImplementedError()
 
-        return data
+    def encrypt(self, data: str = "") -> str:
+        processed_data: str = self._run(data=data, crypt=True)
 
-    def decrypt(self, data: str = '') -> str:
-        data = self._run(data, crypt=False)
+        return processed_data
 
-        return data
-    
+    def decrypt(self, data: str = "") -> str:
+        processed_data: str = self._run(data=data, crypt=False)
+
+        return processed_data
+
     def _custom_into_to_str_fill(self, code: str, str_len: int) -> str:
-        return (f"%{str_len}.f" % code).replace(' ', '0')
+        return (f"%{str_len}.f" % code).replace(" ", "0")

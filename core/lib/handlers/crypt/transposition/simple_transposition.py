@@ -3,7 +3,6 @@ from math import ceil
 
 import numpy as np
 
-from core import config
 from core.lib.handlers.crypt.crypt_handler_interface import CryptHandler
 
 
@@ -14,10 +13,12 @@ class SimpleTransposition(CryptHandler):
     def __init__(self) -> None:
         """Init Handler"""
         self.handler_name = "Simple Transposition Encryptor"
-        self._trans_types_avail = { "route" :  self._route_transposition,
-                                    "custom" : self._custom_transposition }
+        self._trans_types_avail = {
+            "route": self._route_transposition,
+            "custom": self._custom_transposition,
+        }
 
-        self.trans_type = 'route'
+        self.trans_type = "route"
         self.cols_count = 5
 
     @property
@@ -29,8 +30,8 @@ class SimpleTransposition(CryptHandler):
         if trans_type_name in self._trans_types_avail:
             self._trans_type = trans_type_name
             return
-        
-        self._raise_error(f"No such simple substitution '{trans_type_name}'")
+
+        self._raise_error(txt=f"No such simple substitution '{trans_type_name}'")
 
     @property
     def cols_count(self) -> int:
@@ -46,10 +47,10 @@ class SimpleTransposition(CryptHandler):
         if cols_count > 0:
             self._cols_count = cols_count
             return
-        
+
         self._raise_error(f"Negative number for columns count")
 
-    def _route_transposition(self, data: str, crypt=True) -> str:
+    def _route_transposition(self, data: str, crypt: bool = True) -> str:
         """
         Apply route transposition encryption/decryption to text
 
@@ -62,7 +63,9 @@ class SimpleTransposition(CryptHandler):
         """
 
         self.rows_count = ceil(len(data) / self.cols_count)
-        data += ''.join(' ' for _ in range(self.rows_count * self.cols_count - len(data)))
+        data += "".join(
+            " " for _ in range(self.rows_count * self.cols_count - len(data))
+        )
 
         if crypt:
             data_matrix = np.array(list(data)).reshape(self.rows_count, self.cols_count)
@@ -71,7 +74,7 @@ class SimpleTransposition(CryptHandler):
             data_matrix = np.array(list(data)).reshape(self.cols_count, self.rows_count)
             right_data_matrix = np.flip(data_matrix, 1).T
 
-        data = ''.join(map(str, right_data_matrix.flatten())).lower().rstrip()
+        data = "".join(map(str, right_data_matrix.flatten())).lower().rstrip()
 
         return data
 
@@ -87,9 +90,12 @@ class SimpleTransposition(CryptHandler):
                 Information encrypt the text or decrypt it on the contrary
         """
 
-        return ''.join(data[i + 1 : i + 2] + data[i : i + 1] for i in range(0, len(data), 2))
+        return "".join(
+            data[i + 1 : i + 2] + data[i : i + 1] for i in range(0, len(data), 2)
+        )
 
-    def _run(self, data: str, crypt=True) -> str:
+    @ty.override
+    def _run(self, data: str, crypt: bool = True) -> str:
         """
         Return encrypted/decrypted data
 
@@ -101,6 +107,6 @@ class SimpleTransposition(CryptHandler):
                 Information encrypt the text or decrypt it on the contrary
         """
 
-        data = self._trans_types_avail[self.trans_type](data, crypt=crypt)
+        new_data: str = self._trans_types_avail[self.trans_type](data, crypt=crypt)
 
-        return data
+        return new_data

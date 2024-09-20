@@ -1,3 +1,5 @@
+import typing as ty
+
 from core.lib.handlers.crypt.crypt_handler_interface import CryptHandler
 
 
@@ -51,9 +53,10 @@ class SingleFileCrypt(CryptHandler):
 
             _ = processed_file.write(new_line)
 
+    @ty.override
     def _run(
         self,
-        data: str = "",  # pyright: ignore[reportUnusedParameter]
+        data: str = "",
         crypt: bool = True,
     ) -> None:
         """
