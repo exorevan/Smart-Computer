@@ -1,7 +1,8 @@
 from PyQt6.QtWidgets import QDialog
 from PyQt6.uic import loadUi
 
-from core.lib.handlers.crypt.custom_file_crypt.single_file_crypt import SingleFileCrypt
+from core.lib.handlers.crypt.custom_file_crypt.single_file_crypt import \
+    SingleFileCrypt
 
 
 class SingleFilePage(QDialog):

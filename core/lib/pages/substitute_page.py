@@ -1,7 +1,8 @@
 from PyQt6.QtWidgets import QDialog
 from PyQt6.uic import loadUi
 
-from core.lib.handlers.crypt.substitute.simple_substitute import SimpleSubstitute
+from core.lib.handlers.crypt.substitute.simple_substitute import \
+    SimpleSubstitute
 
 
 class SubstitutePage(QDialog):

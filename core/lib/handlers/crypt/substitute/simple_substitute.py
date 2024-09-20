@@ -2,6 +2,7 @@ import typing as ty
 
 from core import config
 from core.lib.handlers.crypt.crypt_handler_interface import CryptHandler
+from core.lib.handlers.crypt import consts_cipher
 
 
 class SimpleSubstitute(CryptHandler):
@@ -9,9 +10,9 @@ class SimpleSubstitute(CryptHandler):
     _cesar_offset: int
     _custom_offset: int
 
-    _alphs: ty.Dict
+    _alphs: dict[str, dict[str, str]] = consts_cipher.ALPHABETS
     _special_symbols: str
-    _sub_types_avail: ty.Dict
+    _sub_types_avail: dict[str, ty.Callable[[str, int], str]]
 
     _new_alph: str
     _current_alph: str
@@ -20,17 +21,14 @@ class SimpleSubstitute(CryptHandler):
         """Init Handler"""
         self.handler_name = "Simple Substitute Encryptor"
 
-        self._alphs = { 'eng': { 'forward' : "abcdefghijklmnopqrstuvwxyz",
-                                 'backward': "zyxwvutsrqponmlkjihgfedcba" },
-                        'ru' : { 'forward' : "абвгдеёжзийклмнопрстуфхцчшщъыьэюя", 
-                                 'backward': "яюэьыъщшчцхфутсрпонмлкйизжёедгвба" } }
-        
         self._special_symbols = "1234567890 ,.!?:;'{}%$#№@^*()<>&|/\\\n\r\t\""
-        
-        self._sub_types_avail = { "cesar" : self._cesar_substitute,
-                                  "atbash": self._atbash_substitute,
-                                   "custom": self._custom_substitute }
-        
+
+        self._sub_types_avail = {
+            "cesar": self._cesar_substitute,
+            "atbash": self._atbash_substitute,
+            "custom": self._custom_substitute,
+        }
+
         self.sub_type = "cesar"
         self.cesar_offset = 5
 
@@ -43,7 +41,7 @@ class SimpleSubstitute(CryptHandler):
         if sub_type_name in self._sub_types_avail:
             self._sub_type = sub_type_name
             return
-        
+
         self._raise_error(f"No such simple substitution '{sub_type_name}'")
 
     @property
@@ -62,14 +60,16 @@ class SimpleSubstitute(CryptHandler):
         return self._custom_offset
 
     @custom_offset.setter
-    def custom_offset(self, custom_offset: ty.Union[str, int]) -> None:
+    def custom_offset(self, custom_offset: int | str) -> None:
         try:
             self._custom_offset = int(custom_offset)
         except:
-            self._raise_error(f"Cannot cast '{custom_offset}' to cesar_offset (int)")
+            self._raise_error(
+                txt=f"Cannot cast '{custom_offset}' to cesar_offset (int)"
+            )
 
     def _substitute_w_alph(self, data: str, alph_code: str) -> str:
-        new_data = ''
+        new_data = ""
 
         for _, letter in enumerate(data):
             if letter in self._special_symbols:
@@ -79,7 +79,9 @@ class SimpleSubstitute(CryptHandler):
             letter_idx = self._current_alph.find(letter.lower())
 
             if not letter_idx + 1:
-                self._raise_error(f"There's no such letter '{letter}' in {alph_code} alphabet")
+                self._raise_error(
+                    f"There's no such letter '{letter}' in {alph_code} alphabet"
+                )
 
             new_letter = self._new_alph[letter_idx]
 
@@ -91,7 +93,7 @@ class SimpleSubstitute(CryptHandler):
 
         return new_data
 
-    def _select_alph(self, data: str) -> ty.Union[str, None]:
+    def _select_alph(self, data: str) -> str | None:
         """
         Find the alphabet corresponding to the text
 
@@ -100,15 +102,18 @@ class SimpleSubstitute(CryptHandler):
         data : str
                 Text to encrypt or decrypt
         """
-        
+
+        alph: str
         for letter in data:
-            for alph_key in self._alphs:
-                alph = self._alphs[alph_key]['forward']
+            for alph_key in consts_cipher.ALPHABETS:
+                alph = consts_cipher.ALPHABETS[alph_key]["forward"]
 
                 if letter.lower() in alph:
                     return alph_key, alph
-            
-        self._raise_error(f"No alphabet with these letters '{data[:config.MAX_TEXT_LENGTH_TO_PRINT]}'")
+
+        self._raise_error(
+            txt=f"No alphabet with these letters '{data[:config.MAX_TEXT_LENGTH_TO_PRINT]}'"
+        )
 
     def _generate_alph_for_cesar(self, alph: str, crypt: int = 1) -> str:
         """
@@ -121,8 +126,8 @@ class SimpleSubstitute(CryptHandler):
         crypt : int
                 Information encrypt the text or decrypt it on the contrary
         """
-        
-        return alph[crypt * self.cesar_offset : ] + alph[ : crypt * self.cesar_offset]
+
+        return alph[crypt * self.cesar_offset :] + alph[: crypt * self.cesar_offset]
 
     def _atbash_substitute(self, data: str, crypt: int = 1) -> str:
         """
@@ -139,7 +144,7 @@ class SimpleSubstitute(CryptHandler):
         alph_code, alph = self._select_alph(data)
 
         self._current_alph = alph
-        self._new_alph = self._alphs[alph_code]['backward']
+        self._new_alph = self._alphs[alph_code]["backward"]
 
         new_data = self._substitute_w_alph(data, alph_code)
 
@@ -156,7 +161,7 @@ class SimpleSubstitute(CryptHandler):
         crypt : int
                 Information encrypt the text or decrypt it on the contrary
         """
-        
+
         alph_code, alph = self._select_alph(data)
 
         self._current_alph = alph
@@ -179,12 +184,19 @@ class SimpleSubstitute(CryptHandler):
         """
 
         if (crypt + 1) / 2:
-            return ''.join(list([self._custom_into_to_str_fill(ord(char) + self.custom_offset, 4) for char in data]))
-        
-        new_data = ''
+            return "".join(
+                list(
+                    [
+                        self._custom_into_to_str_fill(ord(char) + self.custom_offset, 4)
+                        for char in data
+                    ]
+                )
+            )
+
+        new_data = ""
 
         for i in range(int(len(data) / 4)):
-            new_data += chr(int(float(data[i * 4: i * 4 + 4]) - self.custom_offset))
+            new_data += chr(int(float(data[i * 4 : i * 4 + 4]) - self.custom_offset))
 
         return new_data
 

@@ -1,7 +1,8 @@
 from PyQt6.QtWidgets import QDialog
 from PyQt6.uic import loadUi
 
-from core.lib.handlers.crypt.transposition.simple_transposition import SimpleTransposition
+from core.lib.handlers.crypt.transposition.simple_transposition import \
+    SimpleTransposition
 
 
 class TransposePage(QDialog):

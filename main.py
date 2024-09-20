@@ -1,42 +1,41 @@
 import sys
+from typing import NoReturn
+
 from PyQt6 import QtWidgets
-from PyQt6.QtWidgets import QApplication
+from PyQt6.QtWidgets import QApplication, QStackedWidget
 
 from core.lib.handlers.handler_interface import Handler
-from core.lib.handlers.crypt.substitute.simple_substitute import SimpleSubstitute
-from core.lib.handlers.crypt.transposition.simple_transposition import SimpleTransposition
-
+from core.lib.pages.custom_block_page import CustomBlockPage
+from core.lib.pages.double_file_page import DoubleFilePage
+from core.lib.pages.single_file_page import SingleFilePage
 from core.lib.pages.start_page import StartPage
 from core.lib.pages.substitute_page import SubstitutePage
 from core.lib.pages.transposition_page import TransposePage
-from core.lib.pages.single_file_page import SingleFilePage
-from core.lib.pages.double_file_page import DoubleFilePage 
-from core.lib.pages.custom_block_page import CustomBlockPage
-    
+
 
 class MainApplication(Handler):
-    def __init__(self):
+    def __init__(self) -> None:
         self.handler_name = "Main Application"
 
     @classmethod
-    def run(self):
-        app = QApplication(sys.argv)
-        widget = QtWidgets.QStackedWidget()
+    def run(cls) -> NoReturn:
+        app: QApplication = QApplication(sys.argv)
+        widget: QStackedWidget = QtWidgets.QStackedWidget()
 
-        start = StartPage(widget)
-        substitute = SubstitutePage(widget)
-        transpose = TransposePage(widget)
-        singleFile = SingleFilePage(widget)
-        doubleFile = DoubleFilePage(widget)
-        cipherBlock = CustomBlockPage(widget)
+        start: StartPage = StartPage(widget)
+        substitute: SubstitutePage = SubstitutePage(widget)
+        transpose: TransposePage = TransposePage(widget)
+        singleFile: SingleFilePage = SingleFilePage(widget)
+        doubleFile: DoubleFilePage = DoubleFilePage(widget)
+        cipherBlock: CustomBlockPage = CustomBlockPage(widget)
 
-        widget.addWidget(start)
-        widget.addWidget(substitute)
-        widget.addWidget(transpose)
-        widget.addWidget(singleFile)
-        widget.addWidget(doubleFile)
-        widget.addWidget(cipherBlock)
-        widget.show()
+        _ = widget.addWidget(start)
+        _ = widget.addWidget(substitute)
+        _ = widget.addWidget(transpose)
+        _ = widget.addWidget(singleFile)
+        _ = widget.addWidget(doubleFile)
+        _ = widget.addWidget(cipherBlock)
+        _ = widget.show()
 
         sys.exit(app.exec())
 

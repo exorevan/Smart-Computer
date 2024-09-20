@@ -1,43 +1,24 @@
 import math
-import numpy as np
 import re
-import typing as ty
 
-from core import config
 from core.lib.handlers.crypt.crypt_handler_interface import CryptHandler
+from core.lib.handlers.crypt import consts_cipher
 
 
 class CipherBlock(CryptHandler):
-    _cipher_type: str
-    _custom_offset: int
-    _alphs: ty.Dict
+    _cipher_type: str = "custom"
+    _custom_offset: int  # pyright: ignore[reportUninitializedInstanceVariable]
+    _alphs: dict[str, dict[str, str]] = consts_cipher.ALPHABETS
 
-    _cur_alph: str
+    cur_alph: str | None = None
 
     def __init__(self) -> None:
         """Init Handler"""
         self.handler_name = "Cipher Block"
-        self._cipher_types_avail = { "custom" : self._custom_block }
+        self._cipher_types_avail = {"custom": self._custom_block}
 
-        self._alphs = { 'eng': { 'forward' : "abcdefghijklmnopqrstuvwxyz",
-                                 'backward': "zyxwvutsrqponmlkjihgfedcba" },
-                        'ru' : { 'forward' : "абвгдеёжзийклмнопрстуфхцчшщъыьэюя", 
-                                 'backward': "яюэьыъщшчцхфутсрпонмлкйизжёедгвба" } }
-
-        self.cipher_type = 'custom'
+        self.custom_offset = -10
         self.cols_count = 5
-
-    @property
-    def cipher_type(self) -> str:
-        return self._cipher_type
-
-    @cipher_type.setter
-    def cipher_type(self, cipher_type_name: str) -> None:
-        if cipher_type_name in self._cipher_types_avail:
-            self._cipher_type = cipher_type_name
-            return
-        
-        self._raise_error(f"No such simple substitution '{cipher_type_name}'")
 
     @property
     def custom_offset(self) -> int:
@@ -48,22 +29,26 @@ class CipherBlock(CryptHandler):
         try:
             custom_offset = int(custom_offset)
         except:
-            self._raise_error(f"Error in custom offset creating (got {custom_offset})")
+            self._raise_error(
+                txt=f"Error in custom offset creating (got {custom_offset})"
+            )
 
         self._custom_offset = custom_offset
         return
-        
-    def shift_char(self, char, block_number):
+
+    def shift_char(self, char: str, block_number: int) -> str:
         char = char.lower()
-        self.cur_alph = self._alphs['eng']['forward']
+        self.cur_alph = self._alphs["eng"]["forward"]
 
-        if self._alphs['ru']['forward'].find(char) + 1:
-            self.cur_alph = self._alphs['ru']['forward']
+        if self._alphs["ru"]["forward"].find(char) + 1:
+            self.cur_alph = self._alphs["ru"]["forward"]
 
-        shifted_alphabet = self.cur_alph[block_number:] + self.cur_alph[:block_number]
+        shifted_alphabet: str = (
+            self.cur_alph[block_number:] + self.cur_alph[:block_number]
+        )
         return char.translate(str.maketrans(self.cur_alph, shifted_alphabet))
 
-    def _custom_block(self, data: str, crypt=True) -> str:
+    def _custom_block(self, data: str, crypt: bool = True) -> str:
         """
         Apply custom transposition encryption/decryption to text
 
@@ -84,18 +69,30 @@ class CipherBlock(CryptHandler):
             self.custom_offset += 20
             incr += 2
 
-        result = []
+        result: list[str] = []
 
+        cur_block: str
+        shifted_block: str
         for i in range(0, len(data), 4):
-            cur_block = data[i:i + 4]
-            shifted_block = re.sub(r'[A-Za-zА-ЯЁа-яё]', lambda match: self.shift_char(match.group(), cur_block_num), cur_block)
+            cur_block = data[i : i + 4]
+            shifted_block = re.sub(
+                r"[A-Za-zА-ЯЁа-яё]",
+                lambda match: self.shift_char(
+                    char=match.group(), block_number=cur_block_num
+                ),
+                cur_block,
+            )
             result.append(shifted_block)
 
-            cur_block_num = int(math.copysign(int(cur_block_num % self.custom_offset + incr), cur_block_num))
+            cur_block_num = int(
+                math.copysign(
+                    int(cur_block_num % self.custom_offset + incr), cur_block_num
+                )
+            )
 
-        return ''.join(result)
+        return "".join(result)
 
-    def _run(self, data: str, crypt=True) -> str:
+    def _run(self, data: str, crypt: bool = True) -> str:
         """
         Return encrypted/decrypted data
 
@@ -107,6 +104,6 @@ class CipherBlock(CryptHandler):
                 Information encrypt the text or decrypt it on the contrary
         """
 
-        data = self._cipher_types_avail[self.cipher_type](data, crypt=crypt)
+        data = self._cipher_types_avail[self._cipher_type](data, crypt=crypt)
 
         return data

@@ -1,7 +1,8 @@
 from PyQt6.QtWidgets import QDialog
 from PyQt6.uic import loadUi
 
-from core.lib.handlers.crypt.custom_file_crypt.double_file_crypt import DoubleFileCrypt
+from core.lib.handlers.crypt.custom_file_crypt.double_file_crypt import \
+    DoubleFileCrypt
 
 
 class DoubleFilePage(QDialog):

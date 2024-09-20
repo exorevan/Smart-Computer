@@ -1,6 +1,7 @@
-from math import ceil
-import numpy as np
 import typing as ty
+from math import ceil
+
+import numpy as np
 
 from core import config
 from core.lib.handlers.crypt.crypt_handler_interface import CryptHandler
